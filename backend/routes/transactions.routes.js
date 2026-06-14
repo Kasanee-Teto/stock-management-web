@@ -1,9 +1,9 @@
-import express from 'express';
-import { purchase, getMine, getAll } from '../controllers/transaction.controller.js';
-import auth from '../middleware/auth.js';
-import isAdmin from '../middleware/isAdmin.js';
+import { Router } from 'express';
+import auth from '../middlewares/auth.middleware.js';
+import isAdmin from '../middlewares/admin.middleware.js';
+import { purchase, getAll, getMine } from '../controllers/transactions.controller.js';
 
-const router = express.Router();
+const router = Router();
 
 router.post('/', auth, purchase);           // buyer: buy an item
 router.get('/mine', auth, getMine);         // buyer: own history

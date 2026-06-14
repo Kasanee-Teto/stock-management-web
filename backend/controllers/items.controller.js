@@ -1,6 +1,6 @@
 import { Item } from '../models/index.js';
 
-const getAll = async (req, res) => {
+export const getAll = async (req, res) => {
   try {
     const items = await Item.findAll({ order: [['createdAt', 'DESC']] });
     res.json(items);
@@ -9,7 +9,7 @@ const getAll = async (req, res) => {
   }
 };
 
-const getOne = async (req, res) => {
+export const getOne = async (req, res) => {
   try {
     const item = await Item.findByPk(req.params.id);
     if (!item) return res.status(404).json({ message: 'Item not found' });
@@ -19,7 +19,7 @@ const getOne = async (req, res) => {
   }
 };
 
-const create = async (req, res) => {
+export const create = async (req, res) => {
   try {
     const { name, description, price, stock, imageUrl } = req.body;
     if (!name || price == null) {
@@ -32,7 +32,7 @@ const create = async (req, res) => {
   }
 };
 
-const update = async (req, res) => {
+export const update = async (req, res) => {
   try {
     const item = await Item.findByPk(req.params.id);
     if (!item) return res.status(404).json({ message: 'Item not found' });
@@ -43,7 +43,7 @@ const update = async (req, res) => {
   }
 };
 
-const updateStock = async (req, res) => {
+export const updateStock = async (req, res) => {
   try {
     const { stock } = req.body;
     if (stock == null || stock < 0) {
@@ -58,7 +58,7 @@ const updateStock = async (req, res) => {
   }
 };
 
-const remove = async (req, res) => {
+export const remove = async (req, res) => {
   try {
     const item = await Item.findByPk(req.params.id);
     if (!item) return res.status(404).json({ message: 'Item not found' });
@@ -67,13 +67,4 @@ const remove = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-};
-
-export const itemsController = {
-  getAllItems: getAll,
-  getItemById: getOne,
-  createItem: create,
-  updateItem: update,
-  updateItemStock: updateStock,
-  deleteItem: remove,
 };
