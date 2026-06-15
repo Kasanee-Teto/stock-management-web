@@ -11,11 +11,14 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Redirect to login on 401
+// Redirect to login on 401 only when a session token exists (expired/invalid token),
+// NOT during login/register where 401 just means wrong credentials.
+// This fixes vercel redirect loop when backend returns 401 for unauthenticated requests, but user is not actually logged in (no token).
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401) {
+    const hadToken = !!localStorage.getItem('token');
+    if (err.response?.status === 401 && hadToken) {
       localStorage.removeItem('token');
       window.location.href = '/login';
     }
